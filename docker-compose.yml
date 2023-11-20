@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  python-producer:
+    build:
+      context: .
+      dockerfile: sender/Dockerfile
+    volumes:
+      - ./sender:/app/sender
+    working_dir: /app/sender
+    # command: python producer.py
+    depends_on:
+      - rabbitmq
+    networks:
+      - my-network
+
+  python-consumer:
+    build:
+      context: .
+      dockerfile: receiver/Dockerfile
+    volumes:
+      - ./receiver:/app/receiver
+    working_dir: /app/receiver
+    # command: python consumer.py
+    depends_on:
+      - rabbitmq
+    networks:
+      - my-network
+
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
