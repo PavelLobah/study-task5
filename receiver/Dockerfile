@@ -1,10 +1,11 @@
-# Dockerfile для получателя (receiver)
 FROM python:3.11-slim-buster
 
-WORKDIR /app/receiver
+COPY requirements.txt /app/receiver/requirements.txt
 
-COPY receiver/consumer.py .
-
+RUN pip install -r /app/receiver/requirements.txt
 RUN pip install pika
+COPY receiver /app/receiver
+
+WORKDIR /app/receiver
 
 CMD ["python", "consumer.py"]

@@ -1,7 +1,7 @@
 import pika
 
 # Устанавливаем соединение с RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('172.20.0.3'))
 channel = connection.channel()
 
 # Создаем очередь

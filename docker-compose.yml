@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   python-producer:
     build:
@@ -7,11 +8,12 @@ services:
     volumes:
       - ./sender:/app/sender
     working_dir: /app/sender
-    # command: python producer.py
+    command: python producer.py
     depends_on:
       - rabbitmq
     networks:
-      - my-network
+      my-network:
+        ipv4_address: 172.20.0.2
 
   python-consumer:
     build:
@@ -20,11 +22,12 @@ services:
     volumes:
       - ./receiver:/app/receiver
     working_dir: /app/receiver
-    # command: python consumer.py
+    command: python consumer.py
     depends_on:
       - rabbitmq
     networks:
-      - my-network
+      my-network:
+        ipv4_address: 172.20.0.3
 
   rabbitmq:
     image: rabbitmq:latest
@@ -32,8 +35,12 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - my-network
+      my-network:
+        ipv4_address: 172.20.0.4
 
 networks:
   my-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
