@@ -30,7 +30,7 @@ services:
         ipv4_address: 172.20.0.3
 
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:3.10.7-management
     ports:
       - "5672:5672"
       - "15672:15672"
