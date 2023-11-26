@@ -10,7 +10,7 @@ while not connected:
         connected = True
     except pika.exceptions.AMQPConnectionError:
         print("Ошибка подключения. Повторная попытка через 6 секунд...")
-        time.sleep(6)
+        time.sleep(5)
 
 counter = 0
 
@@ -21,7 +21,8 @@ def callback(ch, method, properties, body):
     print(f"Получено сообщение #{counter}", body.decode())
 
 # Слушаем очередь и обрабатываем полученные сообщения
-channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
+channel.basic_consume(queue='video_queue', on_message_callback=callback, auto_ack=True)
+channel.basic_consume(queue='stats_queue', on_message_callback=callback, auto_ack=True)
 
 print('Ожидание сообщений. Для выхода нажмите CTRL+C')
 
