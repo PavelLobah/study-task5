@@ -29,6 +29,48 @@ services:
       my-network:
         ipv4_address: 172.20.0.3
 
+  video-svc:
+    build:
+      context: .
+      dockerfile: video-svc/Dockerfile
+    volumes:
+      - ./video-svc:/app/video-svc
+    working_dir: /app/video-svc
+    command: python video-svc.py
+    depends_on:
+      - rabbitmq
+    networks:
+      my-network:
+        ipv4_address: 172.20.0.5
+
+  feed-svc:
+    build:
+      context: .
+      dockerfile: feed-svc/Dockerfile
+    volumes:
+      - ./feed-svc:/app/feed-svc
+    working_dir: /app/feed-svc
+    command: python feed-svc.py
+    depends_on:
+      - rabbitmq
+    networks:
+      my-network:
+        ipv4_address: 172.20.0.6
+
+  stats-svc:
+    build:
+      context: .
+      dockerfile: stats-svc/Dockerfile
+    volumes:
+      - ./stats-svc:/app/stats-svc
+    working_dir: /app/stats-svc
+    command: python stats-svc.py
+    depends_on:
+      - rabbitmq
+    networks:
+      my-network:
+        ipv4_address: 172.20.0.7
+
   rabbitmq:
     image: rabbitmq:3.10.7-management
     ports:
